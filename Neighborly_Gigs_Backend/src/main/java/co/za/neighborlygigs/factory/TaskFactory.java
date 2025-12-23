@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 public class TaskFactory {
     public static Task createTask(String title, String description, TaskCategory category,
-                                  BigDecimal budget, String address, User poster) {
+                                  BigDecimal budget, String address, String requirements, User poster) {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Title cannot be null or empty");
         }
@@ -36,14 +36,14 @@ public class TaskFactory {
                 .category(category)
                 .budget(budget)
                 .address(address)
+                .requirements(requirements)
                 .poster(poster)
                 .status(TaskStatus.OPEN)
                 .build();
     }
 
     public static Task createTaskWithLocation(String title, String description, TaskCategory category,
-                                              BigDecimal budget, String address,
-                                              Double latitude, Double longitude, User poster) {
+                                              BigDecimal budget, String address, String requirements, User poster) {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Title cannot be null or empty");
         }
@@ -59,9 +59,6 @@ public class TaskFactory {
         if (address == null || address.isEmpty()) {
             throw new IllegalArgumentException("Address cannot be null or empty");
         }
-        if (latitude == null || longitude == null) {
-            throw new IllegalArgumentException("Latitude and Longitude cannot be null");
-        }
         if (poster == null) {
             throw new IllegalArgumentException("Poster cannot be null");
         }
@@ -71,8 +68,7 @@ public class TaskFactory {
                 .category(category)
                 .budget(budget)
                 .address(address)
-                .latitude(latitude)
-                .longitude(longitude)
+                .requirements(requirements)
                 .poster(poster)
                 .status(TaskStatus.OPEN)
                 .build();

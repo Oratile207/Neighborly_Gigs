@@ -33,7 +33,7 @@ public class UserFactory {
                 .firstName(firstName)
                 .lastName(lastName)
                 .role(Role.USER)
-                .isEmailVerified(false)
+                .emailVerified(false)
                 .build();
     }
 
@@ -52,7 +52,7 @@ public class UserFactory {
                 .firstName(firstName)
                 .lastName(lastName)
                 .role(Role.ADMIN)
-                .isEmailVerified(true) // Admins pre-verified
+                .emailVerified(true) // Admins pre-verified
                 .build();
 
     }

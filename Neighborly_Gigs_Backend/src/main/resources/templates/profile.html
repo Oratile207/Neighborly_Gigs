@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile | Neighborly Gigs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --primary: #06232d;
+      --accent: #49c1f0;
+      --bg: #e8fbfb;
+    }
+    body { background-color: var(--bg); }
+    .btn-primary {
+      background-color: var(--accent);
+      color: white;
+      border-radius: 0.5rem;
+    }
+    .nav-bg { background-color: var(--primary); }
+    .footer-bg { background-color: var(--primary); color: white; }
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #49c1f0;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<!-- Top Navigation Bar -->
+<nav class="nav-bg border-b border-gray-700 sticky top-0 z-50">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center">
+        <img th:src="@{/images/horizontal_logo.png}" src="/images/horizontal_logo.png" alt="Neighborly Gigs" class="h-12" />
+      </div>
+      <div class="hidden md:flex items-center gap-4">
+        <a href="/dashboard" class="text-sm font-medium text-white hover:text-accent">Home</a>
+        <a href="/tasks" class="text-sm font-medium text-white hover:text-accent">Browse Jobs</a>
+        <a href="/about" class="text-sm font-medium text-white hover:text-accent">About Us</a>
+<!--        <a href="/contact" class="text-sm font-medium text-white hover:text-accent">Contact</a>-->
+        <a href="/notifications" class="relative text-white hover:text-accent">
+          <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z"/>
+            <path d="M10 18a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+          </svg>
+          <span class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
+        </a>
+        <div class="relative group">
+          <button class="flex items-center text-white hover:text-accent">
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+          <div class="absolute right-0 mt-2 w-48 bg-white text-gray-700 rounded-md shadow-lg py-1 hidden group-hover:block">
+            <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-100">My Profile</a>
+            <a href="/tasks/new" class="block px-4 py-2 text-sm hover:bg-gray-100">Post a Job</a>
+            <form th:action="@{/logout}" method="post" class="block">
+              <button type="submit" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">Logout</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">My Profile</h1>
+
+  <div class="card p-6">
+    <!-- Avatar & Name -->
+    <div class="flex items-center gap-4 mb-6">
+      <div th:if="${user.profilePictureUrl == null}" class="avatar">
+        <span th:text="${user.firstName?.charAt(0) + (user.lastName != null ? user.lastName.charAt(0) : '')}">JD</span>
+      </div>
+      <div th:if="${user.profilePictureUrl != null}" class="w-14 h-14 rounded-full overflow-hidden">
+        <img th:src="${user.profilePictureUrl}" class="w-full h-full object-cover" />
+      </div>
+      <div>
+        <h2 class="text-xl font-bold" th:text="${user.firstName + ' ' + (user.lastName != null ? user.lastName : '')}">John Doe</h2>
+        <p class="text-gray-500" th:text="${user.email}">johndoe@example.com</p>
+      </div>
+    </div>
+
+    <!-- Profile Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div>
+        <div class="flex justify-between mb-2">
+          <label class="text-sm font-medium text-gray-700">First Name</label>
+          <span class="font-semibold" th:text="${user.firstName}">John</span>
+        </div>
+        <div class="flex justify-between mb-2">
+          <label class="text-sm font-medium text-gray-700">Email</label>
+          <span class="font-semibold" th:text="${user.email}">johndoe@example.com</span>
+        </div>
+        <div class="flex justify-between mb-2">
+          <label class="text-sm font-medium text-gray-700">Bio</label>
+          <span class="font-semibold" th:text="${user.bio != null ? user.bio : 'No bio available'}">No bio available</span>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between mb-2">
+          <label class="text-sm font-medium text-gray-700">Last Name</label>
+          <span class="font-semibold" th:text="${user.lastName != null ? user.lastName : '-'}">Doe</span>
+        </div>
+        <div class="flex justify-between mb-2">
+          <label class="text-sm font-medium text-gray-700">Phone</label>
+          <span class="font-semibold" th:text="${user.phone}">+27821234567</span>
+        </div>
+        <div class="flex justify-between mb-2">
+          <label class "text-sm font-medium text-gray-700">My Gigs</label>
+          <span class="font-semibold" th:text="${user.tasksPosted != null ? user.tasksPosted.size() + ' posted' : 'No gigs posted'}">No gigs posted</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex gap-4">
+      <a href="/profile/edit" class="bg-[#49c1f0] text-white py-2 px-6 rounded-md text-sm font-medium hover:bg-[#3aafe0]">
+        Edit Profile
+      </a>
+      <a href="/dashboard" class="bg-gray-200 text-gray-800 hover:bg-gray-300 py-2 px-6 rounded-md text-sm font-medium">
+        Close
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer-bg pt-12 pb-6">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <h3 class="font-bold text-lg mb-4">About Neighborly Gigs</h3>
+        <p class="text-sm opacity-90">
+          Connecting local communities with youth seeking flexible work opportunities. Building trust, one gig at a time.
+        </p>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-4">Support</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/help" class="hover:text-accent transition-colors">Help Center</a></li>
+          <li><a href="/safety" class="hover:text-accent transition-colors">Safety Guidelines</a></li>
+          <li><a href="/terms" class="hover:text-accent transition-colors">Terms of Service</a></li>
+          <li><a href="/privacy" class="hover:text-accent transition-colors">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-4">Contact Us</h3>
+        <ul class="space-y-3 text-sm">
+          <li class="flex items-center gap-2">
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 5.884l7.997.002A2 2 0 0118 10.882l-7.995 4.001A2 2 0 012 10.882L2.003 5.884z"/></svg>
+            support@neighborlygigs.co.za
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h14a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3z"/><path d="M2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2z"/></svg>
+            +27 11 123 4567
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L7 18l1.5-1.5M5.05 4.05A7 7 0 0118 11H11V4.05A7 7 0 015.05 4.05z" clip-rule="evenodd"/></svg>
+            Johannesburg, South Africa
+          </li>
+        </ul>
+        <div class="flex gap-4 mt-4">
+          <a href="#" class="hover:text-accent transition-colors">
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M20 4a2 2 0 00-2-2H8a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V4z"/></svg>
+          </a>
+          <a href="#" class="hover:text-accent transition-colors">
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V6zM7 8h6v6H7V8z"/></svg>
+          </a>
+          <a href="#" class="hover:text-accent transition-colors">
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V6zM7 8h6v6H7V8z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/20 mt-8 pt-8 text-center text-sm opacity-75">
+      <p>&copy; 2025 Neighborly Gigs. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

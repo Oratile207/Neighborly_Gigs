@@ -1,3 +1,5 @@
+// co.za.neighborlygigs.service.UserServiceImpl.java
+
 package co.za.neighborlygigs.service;
 
 import co.za.neighborlygigs.domain.User;
@@ -16,53 +18,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user) {
-        return userRepository.save(user);
+    public User read(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 
     @Override
-    public User read(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
-    @Override
-    public User update(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-    // Custom methods
-    @Override
-    public User updateProfile(Long userId, String bio, String phone) {
-        User user = read(userId);
+    public User updateProfile(String email, String bio, String phone) {
+        User user = read(email);
         user.setBio(bio);
         user.setPhone(phone);
-        return update(user);
+        return userRepository.save(user);
     }
 
     @Override
-    public String uploadProfilePicture(Long userId, MultipartFile file) {
+    public String uploadProfilePicture(String email, MultipartFile file) {
         if (!FileUploadUtil.isImageFile(file)) {
-            throw new RuntimeException("Only image files allowed");
+            throw new RuntimeException("Only image files (JPEG/PNG) are allowed");
         }
-        // TODO: Save file, return URL
-        return "https://neighborlygigs.co.za/images/" + userId + "/profile.jpg";
+        // TODO: Save to cloud storage (AWS S3, etc.)
+        return "https://neighborlygigs.co.za/images/" + email + "/profile.jpg";
     }
 
     @Override
-    public String uploadCv(Long userId, MultipartFile file) {
+    public String uploadCv(String email, MultipartFile file) {
         if (!FileUploadUtil.isDocumentFile(file)) {
-            throw new RuntimeException("Only PDF/DOC files allowed");
+            throw new RuntimeException("Only PDF or DOC files are allowed");
         }
-        return "https://neighborlygigs.co.za/cvs/" + userId + "/cv.pdf";
+        return "https://neighborlygigs.co.za/cvs/" + email + "/cv.pdf";
     }
 }

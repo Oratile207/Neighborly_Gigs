@@ -11,9 +11,9 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByRecipient_IdOrderByCreatedAtDesc(Long userId);
-    long countByRecipient_IdAndIsReadFalse(Long userId);
+    long countByRecipient_IdAndReadFalse(Long userId);
 
     @Modifying
-    @Query("UPDATE Notification n SET n.isRead = true WHERE n.recipient.id = :userId AND n.isRead = false")
+    @Query("UPDATE Notification n SET n.read = true WHERE n.recipient.id = :userId AND n.read = false")
     void markAllAsRead(Long userId);
 }

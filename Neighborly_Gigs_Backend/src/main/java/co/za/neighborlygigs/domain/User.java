@@ -37,12 +37,12 @@ public class User {
     private Role role = Role.USER;
 
     @Column(nullable = false)
-    private Boolean isEmailVerified = false;
+    private Boolean emailVerified = false;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    private LocalDateTime updatedAt = LocalDateTime.now();
+//    @Column(nullable = false, updatable = false)
+//    private LocalDateTime createdAt = LocalDateTime.now();
+//
+//    private LocalDateTime updatedAt = LocalDateTime.now();
 
     // Relationships
     @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL, orphanRemoval = true)

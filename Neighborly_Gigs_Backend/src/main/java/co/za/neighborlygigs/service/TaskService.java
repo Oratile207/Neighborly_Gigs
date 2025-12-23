@@ -7,10 +7,11 @@ import co.za.neighborlygigs.domain.User;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface TaskService extends IService<Task, Long> {
+public interface TaskService {
     Task createTask(String title, String description, TaskCategory category,
-                    BigDecimal budget, String address, User poster);
+                    BigDecimal budget, String address, String requirements, String posterEmail);
     List<Task> getAllOpenTasks();
-    Task assignTask(Long taskId, Long applicantId, User poster);
-    Task completeTask(Long taskId, User currentUser);
+    Task getTaskById(Long id);
+    Task assignTask(Long taskId, String applicantEmail, String posterEmail);
+    Task completeTask(Long taskId, String currentUserEmail);
 }

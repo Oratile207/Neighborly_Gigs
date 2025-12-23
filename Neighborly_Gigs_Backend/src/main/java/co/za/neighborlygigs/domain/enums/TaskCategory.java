@@ -5,6 +5,7 @@ public enum TaskCategory {
     ERRANDS,
     YARD_WORK,
     PET_CARE,
-    HOME_REPAIR,
+    TUTORING,
+    DELIVERY,
     OTHER
 }

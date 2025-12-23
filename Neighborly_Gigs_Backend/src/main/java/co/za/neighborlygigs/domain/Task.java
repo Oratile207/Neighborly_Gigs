@@ -3,7 +3,11 @@ package co.za.neighborlygigs.domain;
 import co.za.neighborlygigs.domain.enums.TaskCategory;
 import co.za.neighborlygigs.domain.enums.TaskStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,12 +37,12 @@ public class Task {
     @Column(nullable = false)
     private String address;
 
-    private Double latitude;
-    private Double longitude;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TaskStatus status = TaskStatus.OPEN;
+
+    @Column
+    private String requirements;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poster_id", nullable = false)
