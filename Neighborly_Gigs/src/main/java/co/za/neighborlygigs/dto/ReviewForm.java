@@ -1,0 +1,19 @@
+// co.za.neighborlygigs.dto.ReviewForm.java
+
+package co.za.neighborlygigs.dto;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+public class ReviewForm {
+
+    @NotNull
+    @Min(1)
+    @Max(5)
+    private Integer rating;
+
+    private String comment;
+}
